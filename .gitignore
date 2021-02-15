@@ -1,0 +1,12 @@
+.history
+accounts.yml
+spec/fixtures/account.yml
+coverage
+.DS_Store
+
+# Ignore IDE and OS specific files
+.idea
+.vs
+.history
+.rakeTasks
+.generators
