@@ -10,3 +10,5 @@ coverage
 .history
 .rakeTasks
 .generators
+
+/vendor/bundle/

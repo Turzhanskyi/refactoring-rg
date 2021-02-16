@@ -13,6 +13,7 @@ end
 
 group :test do
   gem 'rspec', '~> 3.10'
+  gem 'rspec_junit_formatter', '~> 0.4.1'
   gem 'simplecov', '~> 0.21.2'
   gem 'simplecov-lcov', '~> 0.8.0'
   gem 'undercover', '~> 0.4.0'

@@ -1,0 +1,64 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/repo
+    description: The official CircleCI Ruby Docker image
+    docker:
+      - image: circleci/ruby:2.7.2
+
+caches:
+  - &bundle_cache_full v2-repo-{{ checksum "Gemfile.lock" }}
+  - &bundle_cache v2-repo-
+
+commands:
+  defaults:
+    steps:
+      - checkout
+      - run: sudo apt install cmake
+      - restore_cache:
+          keys:
+            - *bundle_cache_full
+            - *bundle_cache
+      - run: bundle install --path vendor/bundle
+      - save_cache:
+          key: *bundle_cache_full
+          paths:
+            - vendor/bundle
+  run_linters:
+    description: command to start linters
+    steps:
+      - run:
+          name: rubocop
+          command: bundle exec rubocop
+  run_specs:
+    steps:
+      - run:
+          name: run specs
+          command: |
+            bundle exec rspec --format progress \
+                              --format RspecJunitFormatter \
+                              --out /tmp/test-results/rspec/rspec.xml
+          when: always
+      - store_test_results:
+          path: /tmp/test-results/rspec/
+jobs:
+  lintering:
+    executor: default
+    steps:
+      - defaults
+      - run_linters
+  run_specs:
+    executor: default
+    steps:
+      - defaults
+      - run_specs
+
+workflows:
+  version: 2.1
+  build:
+    jobs:
+      - lintering
+      - run_specs:
+          requires:
+            - lintering
