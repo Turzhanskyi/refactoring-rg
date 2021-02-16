@@ -1,10 +1,13 @@
 require: rubocop-rspec
 
+AllCops:
+  NewCops: enable
+
 RSpec/MessageChain:
   Enabled: false
 
 RSpec/NestedGroups:
-  Max: 5
+  Max: 6
 
 RSpec/MultipleExpectations:
   Max: 5
@@ -20,11 +23,11 @@ Metrics/BlockLength:
     - 'Gemfile'
     - 'spec/**/*.rb'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
-Documentation:
+Style/Documentation:
   Enabled: false
 
-FrozenStringLiteralComment:
+Style/FrozenStringLiteralComment:
   Enabled: false
