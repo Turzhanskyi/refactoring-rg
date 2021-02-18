@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
+gem 'i18n', '~> 1.8', '>= 1.8.9'
+
 group :development do
   gem 'fasterer', '~> 0.8.3'
   gem 'pry', '~> 0.14.0'
