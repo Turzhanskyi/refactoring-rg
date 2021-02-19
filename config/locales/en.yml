@@ -1,2 +1,10 @@
 en:
-  hello: "test"
+  COMMANDS:
+    create: "create"
+    load: "load"
+    exit: "exit"
+  HELLO_PHRASES:
+    wellcome: "Hello, we are RubyG bank!"
+    press_create: "- If you want to create account - press `create`"
+    press_load: "- If you want to load account - press `load`"
+    press_exit: "- If you want to exit - press `exit`"

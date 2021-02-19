@@ -8,7 +8,6 @@ gem 'i18n', '~> 1.8', '>= 1.8.9'
 
 group :development do
   gem 'fasterer', '~> 0.8.3'
-  gem 'pry', '~> 0.14.0'
   gem 'rubocop', '~> 1.10', require: false
   gem 'rubocop-rspec', '~> 2.2', require: false
 end
@@ -19,4 +18,8 @@ group :test do
   gem 'simplecov', '~> 0.21.2'
   gem 'simplecov-lcov', '~> 0.8.0'
   gem 'undercover', '~> 0.4.0'
+end
+
+group :development, :test do
+  gem 'pry', '~> 0.14.0'
 end
