@@ -1,5 +1,4 @@
-RSpec.describe BankRg::Account do
-  # OVERRIDABLE_FILENAME = 'spec/fixtures/account.yml'.freeze
+RSpec.describe BankRg::Console do
 
   # COMMON_PHRASES = {
   #   create_first_account: "There is no active accounts, do you want to be the first?[y/n]\n",
@@ -11,15 +10,6 @@ RSpec.describe BankRg::Account do
   #   withdraw_amount: 'Input the amount of money you want to withdraw'
   # }.freeze
 
-  # ASK_PHRASES = {
-  #   name: 'Enter your name',
-  #   login: 'Enter your login',
-  #   password: 'Enter your password',
-  #   age: 'Enter your age'
-  # }.freeze
-
-  # rubocop:disable Metrics/LineLength
-
   # CREATE_CARD_PHRASES = [
   #   'You could create one of 3 card types',
   #   '- Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `usual`',
@@ -27,28 +17,6 @@ RSpec.describe BankRg::Account do
   #   '- Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `virtual`',
   #   '- For exit - press `exit`'
   # ].freeze
-
-  # rubocop:enable Metrics/LineLength
-
-  # ACCOUNT_VALIDATION_PHRASES = {
-  #   name: {
-  #     first_letter: 'Your name must not be empty and starts with first upcase letter'
-  #   },
-  #   login: {
-  #     present: 'Login must present',
-  #     longer: 'Login must be longer then 4 symbols',
-  #     shorter: 'Login must be shorter then 20 symbols',
-  #     exists: 'Such account is already exists'
-  #   },
-  #   password: {
-  #     present: 'Password must present',
-  #     longer: 'Password must be longer then 6 symbols',
-  #     shorter: 'Password must be shorter then 30 symbols'
-  #   },
-  #   age: {
-  #     length: 'Your Age must be greeter then 23 and lower then 90'
-  #   }
-  # }.freeze
 
   # ERROR_PHRASES = {
   #   user_not_exists: 'There is no account with given credentials',
@@ -87,12 +55,12 @@ RSpec.describe BankRg::Account do
   #   }
   # }.freeze
 
-  let(:current_subject) { described_class.new }
+  let(:current_subject) { described_class }
 
-  describe '#console' do
+  describe '#call' do
     context 'when correct method calling' do
       after do
-        current_subject.console
+        current_subject.call
       end
 
       it 'create account if input is create' do
@@ -116,7 +84,7 @@ RSpec.describe BankRg::Account do
         allow(current_subject).to receive_message_chain(:gets, :chomp) { 'test' }
         allow(current_subject).to receive(:exit)
         I18n.t(:HELLO_PHRASES).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
-        current_subject.console
+        current_subject.call
       end
     end
   end
@@ -130,6 +98,8 @@ RSpec.describe BankRg::Account do
   #
   #   context 'with success result' do
   #     before do
+  #       stub_const('OVERRIDABLE_FILENAME', 'spec/fixtures/account.yml')
+  #
   #       allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*success_inputs)
   #       allow(current_subject).to receive(:main_menu)
   #       allow(current_subject).to receive(:accounts).and_return([])
@@ -141,24 +111,24 @@ RSpec.describe BankRg::Account do
   #
   #     it 'with correct outout' do
   #       allow(File).to receive(:open)
-  #       ASK_PHRASES.values.each { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
-  #       ACCOUNT_VALIDATION_PHRASES.values.map(&:values).each do |phrase|
+  #       I18n.t(:ASK_PHRASES).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
+  #       I18n.t(:ACCOUNT_VALIDATION_PHRASES).each_value.map(&:values).each do |phrase|
   #         expect(current_subject).not_to receive(:puts).with(phrase)
   #       end
   #       current_subject.create
   #     end
   #
   #     it 'write to file Account instance' do
-  #       current_subject.instance_variable_set(:@file_path, OVERRIDABLE_FILENAME)
+  #       stub_const('BankingSystem::AccountsManager::FILE_PATH', OVERRIDABLE_FILENAME)
   #       current_subject.create
   #       expect(File.exist?(OVERRIDABLE_FILENAME)).to be true
   #       accounts = YAML.load_file(OVERRIDABLE_FILENAME)
   #       expect(accounts).to be_a Array
   #       expect(accounts.size).to be 1
-  #       accounts.map { |account| expect(account).to be_a described_class }
+  #       accounts.map { |account| expect(account).to be_a BankingSystem::Account }
   #     end
   #   end
-
+  #
   #   context 'with errors' do
   #     before do
   #       all_inputs = current_inputs + success_inputs
@@ -171,7 +141,7 @@ RSpec.describe BankRg::Account do
   #     context 'with name errors' do
   #       context 'without small letter' do
   #         let(:error_input) { 'some_test_name' }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:name][:first_letter] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.name.first_letter') }
   #         let(:current_inputs) { [error_input, success_age_input, success_login_input, success_password_input] }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
@@ -183,31 +153,31 @@ RSpec.describe BankRg::Account do
   #
   #       context 'when present' do
   #         let(:error_input) { '' }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:login][:present] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.present') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end
   #
   #       context 'when longer' do
   #         let(:error_input) { 'E' * 3 }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:login][:longer] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.longer') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end
   #
   #       context 'when shorter' do
   #         let(:error_input) { 'E' * 21 }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:login][:shorter] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.shorter') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end
   #
   #       context 'when exists' do
   #         let(:error_input) { 'Denis1345' }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:login][:exists] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.exists') }
   #
   #         before do
-  #           allow(current_subject).to receive(:accounts) { [instance_double('Account', login: error_input)] }
+  #           allow(BankRg::AccountsManager).to receive(:accounts) { [instance_double('Account', login: error_input)] }
   #         end
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
@@ -216,7 +186,7 @@ RSpec.describe BankRg::Account do
   #
   #     context 'with age errors' do
   #       let(:current_inputs) { [success_name_input, error_input, success_login_input, success_password_input] }
-  #       let(:error) { ACCOUNT_VALIDATION_PHRASES[:age][:length] }
+  #       let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.age.length') }
   #
   #       context 'with length minimum' do
   #         let(:error_input) { '22' }
@@ -236,21 +206,21 @@ RSpec.describe BankRg::Account do
   #
   #       context 'when absent' do
   #         let(:error_input) { '' }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:password][:present] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.present') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end
   #
   #       context 'when longer' do
   #         let(:error_input) { 'E' * 5 }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:password][:longer] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.longer') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end
   #
   #       context 'when shorter' do
   #         let(:error_input) { 'E' * 31 }
-  #         let(:error) { ACCOUNT_VALIDATION_PHRASES[:password][:shorter] }
+  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.shorter') }
   #
   #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
   #       end

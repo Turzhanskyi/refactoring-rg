@@ -6,7 +6,7 @@ AllCops:
   Exclude:
     - 'vendor/**/*'
     - 'account.rb'
-    - 'spec/account_spec.rb'
+    - 'spec/console_spec.rb'
 
 RSpec/MessageChain:
   Enabled: false

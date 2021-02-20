@@ -8,3 +8,22 @@ en:
     press_create: "- If you want to create account - press `create`"
     press_load: "- If you want to load account - press `load`"
     press_exit: "- If you want to exit - press `exit`"
+  ACCOUNT_VALIDATION_PHRASES:
+    name:
+      first_letter: "Your name must not be empty and starts with first upcase letter"
+    login:
+      present: "Login must present"
+      longer: "Login must be longer then 4 symbols"
+      shorter: "Login must be shorter then 20 symbols"
+      exists: "Such account is already exists"
+    password:
+      present: "Password must present"
+      longer: "Password must be longer then 6 symbols"
+      shorter: "Password must be shorter then 30 symbols"
+    age:
+      length: "Your Age must be greeter then 23 and lower then 90"
+  ASK_PHRASES:
+    name: "Enter your name"
+    login: "Enter your login"
+    password: "Enter your password"
+    age: "Enter your age"

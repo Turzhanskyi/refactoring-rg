@@ -1,38 +1,45 @@
 module BankRg
   class Account
-    COMMANDS = %i[create load exit].freeze
+    class << self
+      def validate_name(name, errors)
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.name.first_letter') if name == '' || name[0] != name[0].upcase
 
-    def console
-      start_menu
-    end
-
-    def create
-      pp 'create'
-    end
-
-    def load
-      pp 'load'
-    end
-
-    private
-
-    def start_menu
-      %i[wellcome press_create press_load press_exit].each do |phrase|
-        puts I18n.t(phrase, scope: :HELLO_PHRASES)
+        name
       end
 
-      command = gets.chomp
+      def validate_login(login, errors)
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.login.present') if login == ''
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.login.longer') if login.length < 4
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.login.shorter') if login.length > 20
+        if AccountsManager.accounts.map(&:login).include? login
+          errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.login.exists')
+        end
 
-      return create if commands_options[command] == :create
-      return load if commands_options[command] == :load
+        login
+      end
 
-      exit
+      def validate_age(age, errors)
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.age.length') if age < 23 || age > 90
+
+        age
+      end
+
+      def validate_password(password, errors)
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.password.present') if password == ''
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.password.longer') if password.length < 6
+        errors.push I18n.t('ACCOUNT_VALIDATION_PHRASES.password.shorter') if password.length > 30
+
+        password
+      end
     end
 
-    def commands_options
-      @commands_options ||= COMMANDS.each_with_object({}) do |command, obj|
-        obj[I18n.t(command, scope: :COMMANDS)] = command
-      end
+    attr_reader :login, :name, :age, :password
+
+    def initialize(login:, name:, age:, password:)
+      @login = login
+      @name = name
+      @age = age
+      @password = password
     end
   end
 end

@@ -5,4 +5,4 @@ $LOAD_PATH << File.expand_path('./lib', __dir__)
 require 'bundler/setup'
 require 'bank_rg'
 
-BankRg::Account.new.console
+BankRg::Console.call
