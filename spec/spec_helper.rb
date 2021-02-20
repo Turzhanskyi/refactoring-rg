@@ -6,7 +6,6 @@ SimpleCov.start do
 end
 
 require 'bundler/setup'
-require 'pry'
 require 'bank_rg'
 
 RSpec.configure do |config|

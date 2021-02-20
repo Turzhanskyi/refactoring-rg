@@ -1,13 +1,4 @@
 en:
-  COMMANDS:
-    create: "create"
-    load: "load"
-    exit: "exit"
-  HELLO_PHRASES:
-    wellcome: "Hello, we are RubyG bank!"
-    press_create: "- If you want to create account - press `create`"
-    press_load: "- If you want to load account - press `load`"
-    press_exit: "- If you want to exit - press `exit`"
   ACCOUNT_VALIDATION_PHRASES:
     name:
       first_letter: "Your name must not be empty and starts with first upcase letter"
@@ -43,3 +34,32 @@ en:
     wrong_number: "You entered wrong number!\n"
     correct_amount: "You must input correct amount of money"
     tax_higher: "Your tax is higher than input amount"
+  START_MENU_PHRASES: |
+    Hello, we are RubyG bank!
+    - If you want to create account - press `%{create}`
+    - If you want to load account - press `%{load}`
+    - If you want to exit - press `%{exit}`
+  START_MENU_COMMANDS:
+    create: "create"
+    load: "load"
+    exit: "exit"
+  MAIN_MENU_PHRASES: |
+    Welcome, %{name}
+    If you want to:
+    - show all cards - press `%{show_cards}`
+    - create card - press `%{create_card}`
+    - destroy card - press `%{destroy_card}`
+    - put money on card - press `%{put_money}`
+    - withdraw money on card - press `%{withdraw_money}`
+    - send money to another card  - press `%{send_money}`
+    - destroy account - press `%{destroy_account}`
+    - exit from account - press `%{exit}`
+  MAIN_MENU_COMMANDS:
+    show_cards: "SC"
+    create_card: "CC"
+    destroy_card: "DC"
+    put_money: "PM"
+    withdraw_money: "WM"
+    send_money: "SM"
+    destroy_account: "DA"
+    exit: "exit"
