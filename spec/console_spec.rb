@@ -89,144 +89,144 @@ RSpec.describe BankRg::Console do
     end
   end
 
-  # describe '#create' do
-  #   let(:success_name_input) { 'Denis' }
-  #   let(:success_age_input) { '72' }
-  #   let(:success_login_input) { 'Denis' }
-  #   let(:success_password_input) { 'Denis1993' }
-  #   let(:success_inputs) { [success_name_input, success_age_input, success_login_input, success_password_input] }
-  #
-  #   context 'with success result' do
-  #     before do
-  #       stub_const('OVERRIDABLE_FILENAME', 'spec/fixtures/account.yml')
-  #
-  #       allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*success_inputs)
-  #       allow(current_subject).to receive(:main_menu)
-  #       allow(current_subject).to receive(:accounts).and_return([])
-  #     end
-  #
-  #     after do
-  #       File.delete(OVERRIDABLE_FILENAME) if File.exist?(OVERRIDABLE_FILENAME)
-  #     end
-  #
-  #     it 'with correct outout' do
-  #       allow(File).to receive(:open)
-  #       I18n.t(:ASK_PHRASES).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
-  #       I18n.t(:ACCOUNT_VALIDATION_PHRASES).each_value.map(&:values).each do |phrase|
-  #         expect(current_subject).not_to receive(:puts).with(phrase)
-  #       end
-  #       current_subject.create
-  #     end
-  #
-  #     it 'write to file Account instance' do
-  #       stub_const('BankingSystem::AccountsManager::FILE_PATH', OVERRIDABLE_FILENAME)
-  #       current_subject.create
-  #       expect(File.exist?(OVERRIDABLE_FILENAME)).to be true
-  #       accounts = YAML.load_file(OVERRIDABLE_FILENAME)
-  #       expect(accounts).to be_a Array
-  #       expect(accounts.size).to be 1
-  #       accounts.map { |account| expect(account).to be_a BankingSystem::Account }
-  #     end
-  #   end
-  #
-  #   context 'with errors' do
-  #     before do
-  #       all_inputs = current_inputs + success_inputs
-  #       allow(File).to receive(:open)
-  #       allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*all_inputs)
-  #       allow(current_subject).to receive(:main_menu)
-  #       allow(current_subject).to receive(:accounts).and_return([])
-  #     end
-  #
-  #     context 'with name errors' do
-  #       context 'without small letter' do
-  #         let(:error_input) { 'some_test_name' }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.name.first_letter') }
-  #         let(:current_inputs) { [error_input, success_age_input, success_login_input, success_password_input] }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #     end
-  #
-  #     context 'with login errors' do
-  #       let(:current_inputs) { [success_name_input, success_age_input, error_input, success_password_input] }
-  #
-  #       context 'when present' do
-  #         let(:error_input) { '' }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.present') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'when longer' do
-  #         let(:error_input) { 'E' * 3 }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.longer') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'when shorter' do
-  #         let(:error_input) { 'E' * 21 }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.shorter') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'when exists' do
-  #         let(:error_input) { 'Denis1345' }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.exists') }
-  #
-  #         before do
-  #           allow(BankRg::AccountsManager).to receive(:accounts) { [instance_double('Account', login: error_input)] }
-  #         end
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #     end
-  #
-  #     context 'with age errors' do
-  #       let(:current_inputs) { [success_name_input, error_input, success_login_input, success_password_input] }
-  #       let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.age.length') }
-  #
-  #       context 'with length minimum' do
-  #         let(:error_input) { '22' }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'with length maximum' do
-  #         let(:error_input) { '91' }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #     end
-  #
-  #     context 'with password errors' do
-  #       let(:current_inputs) { [success_name_input, success_age_input, success_login_input, error_input] }
-  #
-  #       context 'when absent' do
-  #         let(:error_input) { '' }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.present') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'when longer' do
-  #         let(:error_input) { 'E' * 5 }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.longer') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #
-  #       context 'when shorter' do
-  #         let(:error_input) { 'E' * 31 }
-  #         let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.shorter') }
-  #
-  #         it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
-  #       end
-  #     end
-  #   end
-  # end
+  describe '#create' do
+    let(:success_name_input) { 'Denis' }
+    let(:success_age_input) { '72' }
+    let(:success_login_input) { 'Denis' }
+    let(:success_password_input) { 'Denis1993' }
+    let(:success_inputs) { [success_name_input, success_age_input, success_login_input, success_password_input] }
+
+    context 'with success result' do
+      before do
+        stub_const('OVERRIDABLE_FILENAME', 'spec/fixtures/account.yml')
+
+        allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*success_inputs)
+        allow(current_subject).to receive(:main_menu)
+        allow(current_subject).to receive(:accounts).and_return([])
+      end
+
+      after do
+        File.delete(OVERRIDABLE_FILENAME) if File.exist?(OVERRIDABLE_FILENAME)
+      end
+
+      it 'with correct outout' do
+        allow(File).to receive(:open)
+        I18n.t(:ASK_PHRASES).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
+        I18n.t(:ACCOUNT_VALIDATION_PHRASES).each_value.map(&:values).each do |phrase|
+          expect(current_subject).not_to receive(:puts).with(phrase)
+        end
+        current_subject.create
+      end
+
+      it 'write to file Account instance' do
+        stub_const('BankingSystem::AccountsManager::FILE_PATH', OVERRIDABLE_FILENAME)
+        current_subject.create
+        expect(File.exist?(OVERRIDABLE_FILENAME)).to be true
+        accounts = YAML.load_file(OVERRIDABLE_FILENAME)
+        expect(accounts).to be_a Array
+        expect(accounts.size).to be 1
+        accounts.map { |account| expect(account).to be_a BankingSystem::Account }
+      end
+    end
+
+    context 'with errors' do
+      before do
+        all_inputs = current_inputs + success_inputs
+        allow(File).to receive(:open)
+        allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*all_inputs)
+        allow(current_subject).to receive(:main_menu)
+        allow(current_subject).to receive(:accounts).and_return([])
+      end
+
+      context 'with name errors' do
+        context 'without small letter' do
+          let(:error_input) { 'some_test_name' }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.name.first_letter') }
+          let(:current_inputs) { [error_input, success_age_input, success_login_input, success_password_input] }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+      end
+
+      context 'with login errors' do
+        let(:current_inputs) { [success_name_input, success_age_input, error_input, success_password_input] }
+
+        context 'when present' do
+          let(:error_input) { '' }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.present') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'when longer' do
+          let(:error_input) { 'E' * 3 }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.longer') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'when shorter' do
+          let(:error_input) { 'E' * 21 }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.shorter') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'when exists' do
+          let(:error_input) { 'Denis1345' }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.exists') }
+
+          before do
+            allow(BankRg::AccountsManager).to receive(:accounts) { [instance_double('Account', login: error_input)] }
+          end
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+      end
+
+      context 'with age errors' do
+        let(:current_inputs) { [success_name_input, error_input, success_login_input, success_password_input] }
+        let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.age.length') }
+
+        context 'with length minimum' do
+          let(:error_input) { '22' }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'with length maximum' do
+          let(:error_input) { '91' }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+      end
+
+      context 'with password errors' do
+        let(:current_inputs) { [success_name_input, success_age_input, success_login_input, error_input] }
+
+        context 'when absent' do
+          let(:error_input) { '' }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.present') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'when longer' do
+          let(:error_input) { 'E' * 5 }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.longer') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+
+        context 'when shorter' do
+          let(:error_input) { 'E' * 31 }
+          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.shorter') }
+
+          it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
+        end
+      end
+    end
+  end
 
   # describe '#load' do
   #   context 'without active accounts' do
