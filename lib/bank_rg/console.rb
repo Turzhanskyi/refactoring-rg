@@ -19,30 +19,49 @@ module BankRg
       def create
         loop do
           errors = []
-          inputs = read_account_inputs errors
+          inputs = account_inputs errors
 
-          break create_account inputs if errors.empty?
+          next errors.each { |error| puts error } unless errors.empty?
 
-          errors.each { |error| puts error }
+          @current_account = Account.new(**inputs)
+          AccountsManager.add_account @current_account
+
+          break
         end
 
         main_menu
       end
 
       def load
-        pp 'load'
+        loop do
+          accounts = AccountsManager.accounts
+
+          return create_the_first_account if accounts.empty?
+
+          login = login_input
+          password = password_input
+
+          @current_account = accounts.find { |account| account.login == login && account.password == password }
+
+          break unless @current_account.nil?
+
+          puts I18n.t(:user_not_exists, scope: :ERROR_PHRASES)
+        end
+
+        main_menu
       end
 
       def main_menu
         pp 'main_menu'
       end
 
-      private
+      def create_the_first_account
+        puts I18n.t(:create_first_account, scope: :COMMON_PHRASES)
 
-      def create_account(inputs)
-        @current_account = Account.new(**inputs)
-        AccountsManager.add_account @current_account
+        gets.chomp == 'y' ? create : start
       end
+
+      private
 
       def start_commands
         @start_commands ||= %i[create load exit].each_with_object({}) do |command, obj|

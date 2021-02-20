@@ -1,15 +1,5 @@
 RSpec.describe BankRg::Console do
 
-  # COMMON_PHRASES = {
-  #   create_first_account: "There is no active accounts, do you want to be the first?[y/n]\n",
-  #   destroy_account: "Are you sure you want to destroy account?[y/n]\n",
-  #   if_you_want_to_delete: 'If you want to delete:',
-  #   choose_card: 'Choose the card for putting:',
-  #   choose_card_withdrawing: 'Choose the card for withdrawing:',
-  #   input_amount: 'Input the amount of money you want to put on your card',
-  #   withdraw_amount: 'Input the amount of money you want to withdraw'
-  # }.freeze
-
   # CREATE_CARD_PHRASES = [
   #   'You could create one of 3 card types',
   #   '- Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `usual`',
@@ -17,16 +7,6 @@ RSpec.describe BankRg::Console do
   #   '- Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `virtual`',
   #   '- For exit - press `exit`'
   # ].freeze
-
-  # ERROR_PHRASES = {
-  #   user_not_exists: 'There is no account with given credentials',
-  #   wrong_command: 'Wrong command. Try again!',
-  #   no_active_cards: "There is no active cards!\n",
-  #   wrong_card_type: "Wrong card type. Try again!\n",
-  #   wrong_number: "You entered wrong number!\n",
-  #   correct_amount: 'You must input correct amount of money',
-  #   tax_higher: 'Your tax is higher than input amount'
-  # }.freeze
 
   # MAIN_OPERATIONS_TEXTS = [
   #   'If you want to:',
@@ -228,78 +208,78 @@ RSpec.describe BankRg::Console do
     end
   end
 
-  # describe '#load' do
-  #   context 'without active accounts' do
-  #     it do
-  #       expect(current_subject).to receive(:accounts).and_return([])
-  #       expect(current_subject).to receive(:create_the_first_account).and_return([])
-  #       current_subject.load
-  #     end
-  #   end
-  #
-  #   context 'with active accounts' do
-  #     let(:login) { 'Johnny' }
-  #     let(:password) { 'johnny1' }
-  #
-  #     before do
-  #       allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*all_inputs)
-  #       allow(current_subject).to receive(:accounts) { [instance_double('Account', login: login, password: password)] }
-  #     end
-  #
-  #     context 'with correct outout' do
-  #       let(:all_inputs) { [login, password] }
-  #
-  #       it do
-  #         expect(current_subject).to receive(:main_menu)
-  #         [ASK_PHRASES[:login], ASK_PHRASES[:password]].each do |phrase|
-  #           expect(current_subject).to receive(:puts).with(phrase)
-  #         end
-  #         current_subject.load
-  #       end
-  #     end
-  #
-  #     context 'when account exists' do
-  #       let(:all_inputs) { [login, password] }
-  #
-  #       it do
-  #         expect(current_subject).to receive(:main_menu)
-  #         expect { current_subject.load }.not_to output(/#{ERROR_PHRASES[:user_not_exists]}/).to_stdout
-  #       end
-  #     end
-  #
-  #     context 'when account doesn\t exists' do
-  #       let(:all_inputs) { ['test', 'test', login, password] }
-  #
-  #       it do
-  #         expect(current_subject).to receive(:main_menu)
-  #         expect { current_subject.load }.to output(/#{ERROR_PHRASES[:user_not_exists]}/).to_stdout
-  #       end
-  #     end
-  #   end
-  # end
+  describe '#load' do
+    context 'without active accounts' do
+      it do
+        expect(BankRg::AccountsManager).to receive(:accounts).and_return([])
+        expect(current_subject).to receive(:create_the_first_account).and_return([])
+        current_subject.load
+      end
+    end
 
-  # describe '#create_the_first_account' do
-  #   let(:cancel_input) { 'sdfsdfs' }
-  #   let(:success_input) { 'y' }
-  #
-  #   it 'with correct outout' do
-  #     expect(current_subject).to receive_message_chain(:gets, :chomp) {}
-  #     expect(current_subject).to receive(:console)
-  #     expect { current_subject.create_the_first_account }.to output(COMMON_PHRASES[:create_first_account]).to_stdout
-  #   end
-  #
-  #   it 'calls create if user inputs is y' do
-  #     expect(current_subject).to receive_message_chain(:gets, :chomp) { success_input }
-  #     expect(current_subject).to receive(:create)
-  #     current_subject.create_the_first_account
-  #   end
-  #
-  #   it 'calls console if user inputs is not y' do
-  #     expect(current_subject).to receive_message_chain(:gets, :chomp) { cancel_input }
-  #     expect(current_subject).to receive(:console)
-  #     current_subject.create_the_first_account
-  #   end
-  # end
+    context 'with active accounts' do
+      let(:login) { 'Johnny' }
+      let(:password) { 'johnny1' }
+
+      before do
+        allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(*all_inputs)
+        allow(BankRg::AccountsManager).to receive(:accounts) { [instance_double('Account', login: login, password: password)] }
+      end
+
+      context 'with correct out' do
+        let(:all_inputs) { [login, password] }
+
+        it do
+          expect(current_subject).to receive(:main_menu)
+          [I18n.t('ASK_PHRASES.login'), I18n.t('ASK_PHRASES.password')].each do |phrase|
+            expect(current_subject).to receive(:puts).with(phrase)
+          end
+          current_subject.load
+        end
+      end
+
+      context 'when account exists' do
+        let(:all_inputs) { [login, password] }
+
+        it do
+          expect(current_subject).to receive(:main_menu)
+          expect { current_subject.load }.not_to output(/#{I18n.t('ERROR_PHRASES.user_not_exists')}/).to_stdout
+        end
+      end
+
+      context 'when account doesn\t exists' do
+        let(:all_inputs) { ['test', 'test', login, password] }
+
+        it do
+          expect(current_subject).to receive(:main_menu)
+          expect { current_subject.load }.to output(/#{I18n.t('ERROR_PHRASES.user_not_exists')}/).to_stdout
+        end
+      end
+    end
+  end
+
+  describe '#create_the_first_account' do
+    let(:cancel_input) { 'sdfsdfs' }
+    let(:success_input) { 'y' }
+
+    it 'with correct out' do
+      expect(current_subject).to receive_message_chain(:gets, :chomp) {}
+      expect(current_subject).to receive(:call)
+      expect { current_subject.create_the_first_account }.to output(I18n.t('COMMON_PHRASES.create_first_account')).to_stdout
+    end
+
+    it 'calls create if user inputs is y' do
+      expect(current_subject).to receive_message_chain(:gets, :chomp) { success_input }
+      expect(current_subject).to receive(:create)
+      current_subject.create_the_first_account
+    end
+
+    it 'calls console if user inputs is not y' do
+      expect(current_subject).to receive_message_chain(:gets, :chomp) { cancel_input }
+      expect(current_subject).to receive(:call)
+      current_subject.create_the_first_account
+    end
+  end
 
   # describe '#main_menu' do
   #   let(:name) { 'John' }
