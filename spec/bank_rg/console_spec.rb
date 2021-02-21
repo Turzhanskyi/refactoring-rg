@@ -316,50 +316,55 @@ RSpec.describe BankRg::Console do
     end
   end
 
-  # describe '#destroy_account' do
-  #   let(:cancel_input) { 'sdfsdfs' }
-  #   let(:success_input) { 'y' }
-  #   let(:correct_login) { 'test' }
-  #   let(:fake_login) { 'test1' }
-  #   let(:fake_login2) { 'test2' }
-  #   let(:correct_account) { instance_double('Account', login: correct_login) }
-  #   let(:fake_account) { instance_double('Account', login: fake_login) }
-  #   let(:fake_account2) { instance_double('Account', login: fake_login2) }
-  #   let(:accounts) { [correct_account, fake_account, fake_account2] }
+  describe '#destroy_account' do
+    let(:cancel_input) { 'sdfsdfs' }
+    let(:success_input) { 'y' }
+    let(:correct_login) { 'test' }
+    let(:fake_login) { 'test1' }
+    let(:fake_login2) { 'test2' }
+    let(:correct_account) { instance_double('Account', login: correct_login) }
+    let(:fake_account) { instance_double('Account', login: fake_login) }
+    let(:fake_account2) { instance_double('Account', login: fake_login2) }
+    let(:accounts) { [correct_account, fake_account, fake_account2] }
 
-  #   after do
-  #     File.delete(OVERRIDABLE_FILENAME) if File.exist?(OVERRIDABLE_FILENAME)
-  #   end
+    before do
+      stub_const('OVERRIDABLE_FILENAME', 'spec/fixtures/account.yml')
+    end
 
-  #   it 'with correct out' do
-  #     expect(current_subject).to receive_message_chain(:gets, :chomp) {}
-  #     expect { current_subject.destroy_account }.to output(COMMON_PHRASES[:destroy_account]).to_stdout
-  #   end
+    after do
+      File.delete(OVERRIDABLE_FILENAME) if File.exist?(OVERRIDABLE_FILENAME)
+    end
 
-  #   context 'when deleting' do
-  #     it 'deletes account if user inputs is y' do
-  #       expect(current_subject).to receive_message_chain(:gets, :chomp) { success_input }
-  #       expect(current_subject).to receive(:accounts) { accounts }
-  #       current_subject.instance_variable_set(:@file_path, OVERRIDABLE_FILENAME)
-  #       current_subject.instance_variable_set(:@current_account, instance_double('Account', login: correct_login))
+    it 'with correct out' do
+      expect(current_subject).to receive_message_chain(:gets, :chomp) {}
+      expect { current_subject.destroy_account }.to output(I18n.t('COMMON_PHRASES.destroy_account')).to_stdout
+    end
 
-  #       current_subject.destroy_account
+    context 'when deleting' do
+      it 'deletes account if user inputs is y' do
+        stub_const('BankRg::AccountsManager::FILE_PATH', OVERRIDABLE_FILENAME)
+        expect(current_subject).to receive_message_chain(:gets, :chomp) { success_input }
+        expect(BankRg::AccountsManager).to receive(:accounts) { accounts }
+        current_subject.instance_variable_set(:@current_account, instance_double('Account', login: correct_login))
+        allow(current_subject).to receive(:exit)
 
-  #       expect(File.exist?(OVERRIDABLE_FILENAME)).to be true
-  #       file_accounts = YAML.load_file(OVERRIDABLE_FILENAME)
-  #       expect(file_accounts).to be_a Array
-  #       expect(file_accounts.size).to be 2
-  #     end
+        current_subject.destroy_account
 
-  #     it 'doesnt delete account' do
-  #       expect(current_subject).to receive_message_chain(:gets, :chomp) { cancel_input }
+        expect(File.exist?(OVERRIDABLE_FILENAME)).to be true
+        file_accounts = YAML.load_file(OVERRIDABLE_FILENAME)
+        expect(file_accounts).to be_a Array
+        expect(file_accounts.size).to be 2
+      end
 
-  #       current_subject.destroy_account
+      it 'doesnt delete account' do
+        expect(current_subject).to receive_message_chain(:gets, :chomp) { cancel_input }
 
-  #       expect(File.exist?(OVERRIDABLE_FILENAME)).to be false
-  #     end
-  #   end
-  # end
+        current_subject.destroy_account
+
+        expect(File.exist?(OVERRIDABLE_FILENAME)).to be false
+      end
+    end
+  end
 
   # describe '#show_cards' do
   #   let(:cards) { [{ number: 1234, type: 'a' }, { number: 5678, type: 'b' }] }

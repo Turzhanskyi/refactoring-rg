@@ -8,8 +8,17 @@ module BankRg
       end
 
       def add_account(account)
-        new_account = accounts << account
-        File.open(FILE_PATH, 'w') { |f| f.write(new_account.to_yaml) }
+        save_accounts(accounts << account)
+      end
+
+      def destroy_account(login)
+        save_accounts(accounts.filter { |account| account.login != login })
+      end
+
+      private
+
+      def save_accounts(accounts)
+        File.open(FILE_PATH, 'w') { |f| f.write(accounts.to_yaml) }
       end
     end
   end

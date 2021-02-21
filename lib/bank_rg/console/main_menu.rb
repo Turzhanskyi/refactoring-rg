@@ -3,7 +3,7 @@ module BankRg
     module MainMenu
       def main_menu
         loop do
-          puts I18n.t(:MAIN_MENU_PHRASES, **main_menu_commands.merge(name: @current_account.name))
+          puts main_menu_title
 
           command = main_menu_commands.key(gets.chomp)
 
@@ -38,10 +38,21 @@ module BankRg
       end
 
       def destroy_account
-        pp 'destroy account'
+        puts I18n.t('COMMON_PHRASES.destroy_account')
+
+        answer = gets.chomp
+
+        return unless answer == 'y'
+
+        AccountsManager.destroy_account @current_account.login
+        exit
       end
 
       private
+
+      def main_menu_title
+        I18n.t(:MAIN_MENU_PHRASES, **main_menu_commands.merge(name: @current_account.name))
+      end
 
       def main_menu_commands
         @main_menu_commands ||= I18n.t(:MAIN_MENU_COMMANDS)
