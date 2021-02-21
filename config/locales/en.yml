@@ -19,13 +19,17 @@ en:
     password: "Enter your password"
     age: "Enter your age"
   COMMON_PHRASES:
-    create_first_account: "There is no active accounts, do you want to be the first?[y/n]\n"
-    destroy_account: "Are you sure you want to destroy account?[y/n]\n"
+    create_first_account: "There is no active accounts, do you want to be the first?[%{y}/%{n}]\n"
+    destroy_account: "Are you sure you want to destroy account?[%{y}/%{n}]\n"
+    destroy_card: "Are you sure you want to delete %{card_number}?[%{y}/%{n}]"
     if_you_want_to_delete: "If you want to delete:"
-    choose_card: "Choose the card for putting:"
+    choose_card_putting: "Choose the card for putting:"
+    choose_card_sending: "Choose the card for sending:"
+    enter_recipient_card: "Enter the recipient card"
     choose_card_withdrawing: "Choose the card for withdrawing:"
     input_amount: "Input the amount of money you want to put on your card"
     withdraw_amount: "Input the amount of money you want to withdraw"
+    money_was_put: "Money %{money} was put on %{number}. Balance: %{balance}. Tax: %{tax}"
   ERROR_PHRASES:
     user_not_exists: "There is no account with given credentials"
     wrong_command: "Wrong command. Try again!"
@@ -44,6 +48,7 @@ en:
     load: "load"
     exit: "exit"
   MAIN_MENU_PHRASES: |
+
     Welcome, %{name}
     If you want to:
     - show all cards - press `%{show_cards}`
@@ -63,3 +68,18 @@ en:
     send_money: "SM"
     destroy_account: "DA"
     exit: "exit"
+  CREATE_CARD_PHRASES: |
+    You could create one of 3 card types
+    - Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `%{usual}`
+    - Capitalist card. 10$ tax on card INCOME. 10% tax on SENDING money from this card. 4$ tax on WITHDRAWING money. For creation this card - press `%{capitalist}`
+    - Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `%{virtual}`
+    - For exit - press `%{exit}`
+  CREATE_CARD_COMMANDS:
+    usual: "usual"
+    capitalist: "capitalist"
+    virtual: "virtual"
+  PRESS_EXIT_PHRASE: "press `%{exit}` to exit\n"
+  Y_N_ANSWERS:
+    y: "y"
+    n: "n"
+  exit: "exit"

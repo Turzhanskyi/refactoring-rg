@@ -15,6 +15,12 @@ module BankRg
         save_accounts(accounts.filter { |account| account.login != login })
       end
 
+      def update_account(account_to_update)
+        save_accounts(accounts.map! do |account|
+          account.login == account_to_update.login ? account_to_update : account
+        end)
+      end
+
       private
 
       def save_accounts(accounts)

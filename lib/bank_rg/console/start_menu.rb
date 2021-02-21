@@ -45,9 +45,9 @@ module BankRg
       end
 
       def create_the_first_account
-        puts I18n.t(:create_first_account, scope: :COMMON_PHRASES)
+        puts I18n.t('COMMON_PHRASES.create_first_account', **I18n.t(:Y_N_ANSWERS))
 
-        gets.chomp == 'y' ? create : acquire_current_account
+        gets.chomp == I18n.t('Y_N_ANSWERS.y') ? create : acquire_current_account
       end
 
       private

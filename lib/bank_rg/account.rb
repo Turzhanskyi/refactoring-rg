@@ -42,5 +42,13 @@ module BankRg
       @password = password
       @card = []
     end
+
+    def create_card(type)
+      @card << Card.build(type)
+    end
+
+    def destroy_card(number)
+      @card.reject! { |card| card.number == number }
+    end
   end
 end
