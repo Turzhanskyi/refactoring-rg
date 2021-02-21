@@ -366,21 +366,26 @@ RSpec.describe BankRg::Console do
     end
   end
 
-  # describe '#show_cards' do
-  #   let(:cards) { [{ number: 1234, type: 'a' }, { number: 5678, type: 'b' }] }
+  describe '#show_cards' do
+    let(:cards) do
+      [
+        instance_double('Card', number: 1234, type: 'a'),
+        instance_double('Card', number: 5678, type: 'b')
+      ]
+    end
 
-  #   it 'display cards if there are any' do
-  #     current_subject.instance_variable_set(:@current_account, instance_double('Account', card: cards))
-  #     cards.each { |card| expect(current_subject).to receive(:puts).with("- #{card[:number]}, #{card[:type]}") }
-  #     current_subject.show_cards
-  #   end
+    it 'display cards if there are any' do
+      current_subject.instance_variable_set(:@current_account, instance_double('Account', card: cards))
+      cards.each { |card| expect(current_subject).to receive(:puts).with("- #{card.number}, #{card.type}") }
+      current_subject.show_cards
+    end
 
-  #   it 'outputs error if there are no active cards' do
-  #     current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-  #     expect(current_subject).to receive(:puts).with(ERROR_PHRASES[:no_active_cards])
-  #     current_subject.show_cards
-  #   end
-  # end
+    it 'outputs error if there are no active cards' do
+      current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
+      expect(current_subject).to receive(:puts).with(I18n.t('ERROR_PHRASES.no_active_cards'))
+      current_subject.show_cards
+    end
+  end
 
   # describe '#create_card' do
   #   context 'with correct out' do

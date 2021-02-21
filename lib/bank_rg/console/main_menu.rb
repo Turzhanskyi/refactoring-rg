@@ -14,7 +14,9 @@ module BankRg
       end
 
       def show_cards
-        pp 'show cards'
+        return puts I18n.t('ERROR_PHRASES.no_active_cards') if @current_account.card.empty?
+
+        @current_account.card.each { |card| puts "- #{card.number}, #{card.type}" }
       end
 
       def create_card

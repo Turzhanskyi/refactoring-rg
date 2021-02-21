@@ -33,13 +33,14 @@ module BankRg
       end
     end
 
-    attr_reader :login, :name, :age, :password
+    attr_reader :login, :name, :age, :password, :card
 
     def initialize(login:, name:, age:, password:)
       @login = login
       @name = name
       @age = age
       @password = password
+      @card = []
     end
   end
 end
