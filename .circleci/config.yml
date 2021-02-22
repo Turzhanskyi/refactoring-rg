@@ -3,62 +3,61 @@ version: 2.1
 executors:
   default:
     working_directory: ~/repo
-    description: The official CircleCI Ruby Docker image
     docker:
-      - image: circleci/ruby:2.7.2
+      - image: circleci/ruby:2.7.1
 
 caches:
-  - &bundle_cache_full v2-repo-{{ checksum "Gemfile.lock" }}
-  - &bundle_cache v2-repo-
+  - &bundle_cache_full v1-gem-cache-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+  - &bundle_cache_branch v1-gem-cache-{{ .Branch }}
+  - &bundle_cache_repo v1-gem-cache
 
 commands:
-  defaults:
+  setup_environment:
     steps:
       - checkout
       - run: sudo apt install cmake
       - restore_cache:
           keys:
             - *bundle_cache_full
-            - *bundle_cache
-      - run: bundle install --path vendor/bundle
+            - *bundle_cache_branch
+            - *bundle_cache_repo
+      - run: bundle config set path vendor/bundle
+      - run: bundle install
       - save_cache:
           key: *bundle_cache_full
           paths:
             - vendor/bundle
   run_linters:
-    description: command to start linters
     steps:
       - run:
-          name: rubocop
-          command: bundle exec rubocop
+          name: linters
+          command: bundle exec rubocop && bundle exec fasterer
   run_specs:
     steps:
       - run:
-          name: run specs
-          command: |
-            bundle exec rspec --format progress \
-                              --format RspecJunitFormatter \
-                              --out /tmp/test-results/rspec/rspec.xml
-          when: always
-      - store_test_results:
-          path: /tmp/test-results/rspec/
+          name: specs
+          command: bundle exec rspec
+      - store_artifacts:
+          path: ~/repo/coverage
+          destination: coverage
+
 jobs:
   lintering:
     executor: default
     steps:
-      - defaults
+      - setup_environment
       - run_linters
-  run_specs:
+  testing:
     executor: default
     steps:
-      - defaults
+      - setup_environment
       - run_specs
 
 workflows:
-  version: 2.1
+  version: 2
   build:
     jobs:
       - lintering
-      - run_specs:
+      - testing:
           requires:
             - lintering

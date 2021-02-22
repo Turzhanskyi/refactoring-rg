@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'undercover'
 
+SimpleCov.minimum_coverage 95
 SimpleCov.start do
   add_filter(%r{/spec/})
 end

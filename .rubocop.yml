@@ -1,18 +1,13 @@
 require: rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 2.7.2
   NewCops: enable
-  Exclude:
-    - 'vendor/**/*'
-    - 'account.rb'
-    - 'spec/bank_rg/console_spec.rb'
 
 RSpec/MessageChain:
   Enabled: false
 
 RSpec/NestedGroups:
-  Max: 6
+  Max: 5
 
 RSpec/MultipleExpectations:
   Max: 5
@@ -25,7 +20,6 @@ RSpec/MessageSpies:
 
 Metrics/BlockLength:
   Exclude:
-    - 'Gemfile'
     - 'spec/**/*.rb'
 
 Layout/LineLength:

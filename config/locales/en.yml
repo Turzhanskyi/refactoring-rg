@@ -1,52 +1,80 @@
 en:
   ACCOUNT_VALIDATION_PHRASES:
-    name:
-      first_letter: "Your name must not be empty and starts with first upcase letter"
-    login:
-      present: "Login must present"
-      longer: "Login must be longer then 4 symbols"
-      shorter: "Login must be shorter then 20 symbols"
-      exists: "Such account is already exists"
-    password:
-      present: "Password must present"
-      longer: "Password must be longer then 6 symbols"
-      shorter: "Password must be shorter then 30 symbols"
     age:
       length: "Your Age must be greeter then 23 and lower then 90"
+    login:
+      exists: "Such account is already exists"
+      longer: "Login must be longer then 4 symbols"
+      present: "Login must present"
+      shorter: "Login must be shorter then 20 symbols"
+    name:
+      first_letter: "Your name must not be empty and starts with first upcase letter"
+    password:
+      longer: "Password must be longer then 6 symbols"
+      present: "Password must present"
+      shorter: "Password must be shorter then 30 symbols"
   ASK_PHRASES:
-    name: "Enter your name"
-    login: "Enter your login"
-    password: "Enter your password"
     age: "Enter your age"
+    login: "Enter your login"
+    name: "Enter your name"
+    password: "Enter your password"
   COMMON_PHRASES:
+    choose_card_putting: "Choose the card for putting:"
+    choose_card_sending: "Choose the card for sending:"
+    choose_card_withdrawing: "Choose the card for withdrawing:"
     create_first_account: "There is no active accounts, do you want to be the first?[%{y}/%{n}]\n"
     destroy_account: "Are you sure you want to destroy account?[%{y}/%{n}]\n"
     destroy_card: "Are you sure you want to delete %{card_number}?[%{y}/%{n}]"
-    if_you_want_to_delete: "If you want to delete:"
-    choose_card_putting: "Choose the card for putting:"
-    choose_card_sending: "Choose the card for sending:"
     enter_recipient_card: "Enter the recipient card"
-    choose_card_withdrawing: "Choose the card for withdrawing:"
-    input_amount: "Input the amount of money you want to put on your card"
+    if_you_want_to_delete: "If you want to delete:"
+    money_was_put: "Money %{amount} was put on %{number}. Balance: %{balance}. Tax: %{tax}"
+    money_was_sent: "Money %{amount} sent from %{number}. Money left: %{balance}. Tax: %{tax}"
+    money_was_withdraw: "Money %{amount} withdrawed from %{number}. Money left: %{balance}. Tax: %{tax}"
+    put_amount: "Input the amount of money you want to put on your card"
+    send_amount: "Input the amount of money you want to send"
     withdraw_amount: "Input the amount of money you want to withdraw"
-    money_was_put: "Money %{money} was put on %{number}. Balance: %{balance}. Tax: %{tax}"
+  CREATE_CARD_COMMANDS:
+    capitalist: "capitalist"
+    usual: "usual"
+    virtual: "virtual"
+  CREATE_CARD_PHRASES: |
+    You could create one of 3 card types
+    - Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `%{usual}`
+    - Capitalist card. 10$ tax on card INCOME. 10% tax on SENDING money from this card. 4$ tax on WITHDRAWING money. For creation this card - press `%{capitalist}`
+    - Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `%{virtual}`
+    - For exit - press `%{exit}`
   ERROR_PHRASES:
-    user_not_exists: "There is no account with given credentials"
-    wrong_command: "Wrong command. Try again!"
     no_active_cards: "There is no active cards!\n"
-    wrong_card_type: "Wrong card type. Try again!\n"
-    wrong_number: "You entered wrong number!\n"
-    correct_amount: "You must input correct amount of money"
+    no_card_with_number: "There is no card with number %{recipient_number}\n"
+    not_enough_money_to_send: "There is no enough money on sender card"
+    not_enough_money_to_withdraw: "You don't have enough money on card for such operation"
     tax_higher: "Your tax is higher than input amount"
+    user_not_exists: "There is no account with given credentials"
+    wrong_amount: "You must input correct amount of money"
+    wrong_card_number_length: "Please, input correct number of card"
+    wrong_card_type: "Wrong card type. Try again!\n"
+    wrong_command: "Wrong command. Try again!"
+    wrong_number: "You entered wrong number!\n"
+  MAIN_MENU_COMMANDS:
+    show_cards: "SC"
+    create_card: "CC"
+    destroy_card: "DC"
+    put_money: "PM"
+    withdraw_money: "WM"
+    send_money: "SM"
+    destroy_account: "DA"
+    exit: "exit"
+  PRESS_EXIT_PHRASE: "press `%{exit}` to exit\n"
+  exit: "exit"
+  START_MENU_COMMANDS:
+    create: "create"
+    load: "load"
+    exit: "exit"
   START_MENU_PHRASES: |
     Hello, we are RubyG bank!
     - If you want to create account - press `%{create}`
     - If you want to load account - press `%{load}`
     - If you want to exit - press `%{exit}`
-  START_MENU_COMMANDS:
-    create: "create"
-    load: "load"
-    exit: "exit"
   MAIN_MENU_PHRASES: |
 
     Welcome, %{name}
@@ -59,27 +87,6 @@ en:
     - send money to another card  - press `%{send_money}`
     - destroy account - press `%{destroy_account}`
     - exit from account - press `%{exit}`
-  MAIN_MENU_COMMANDS:
-    show_cards: "SC"
-    create_card: "CC"
-    destroy_card: "DC"
-    put_money: "PM"
-    withdraw_money: "WM"
-    send_money: "SM"
-    destroy_account: "DA"
-    exit: "exit"
-  CREATE_CARD_PHRASES: |
-    You could create one of 3 card types
-    - Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `%{usual}`
-    - Capitalist card. 10$ tax on card INCOME. 10% tax on SENDING money from this card. 4$ tax on WITHDRAWING money. For creation this card - press `%{capitalist}`
-    - Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `%{virtual}`
-    - For exit - press `%{exit}`
-  CREATE_CARD_COMMANDS:
-    usual: "usual"
-    capitalist: "capitalist"
-    virtual: "virtual"
-  PRESS_EXIT_PHRASE: "press `%{exit}` to exit\n"
   Y_N_ANSWERS:
     y: "y"
     n: "n"
-  exit: "exit"

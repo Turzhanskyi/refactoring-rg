@@ -4,22 +4,18 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem 'i18n', '~> 1.8', '>= 1.8.9'
+gem 'i18n'
 
 group :development do
-  gem 'fasterer', '~> 0.8.3'
-  gem 'rubocop', '~> 1.10', require: false
-  gem 'rubocop-rspec', '~> 2.2', require: false
+  gem 'fasterer'
+  gem 'pry'
+  gem 'rubocop'
+  gem 'rubocop-rspec'
 end
 
 group :test do
-  gem 'rspec', '~> 3.10'
-  gem 'rspec_junit_formatter', '~> 0.4.1'
-  gem 'simplecov', '~> 0.21.2'
-  gem 'simplecov-lcov', '~> 0.8.0'
-  gem 'undercover', '~> 0.4.0'
-end
-
-group :development, :test do
-  gem 'pry', '~> 0.14.0'
+  gem 'rspec', '~> 3.8'
+  gem 'simplecov'
+  gem 'simplecov-lcov'
+  gem 'undercover'
 end

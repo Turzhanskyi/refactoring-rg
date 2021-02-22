@@ -1,7 +1,7 @@
 module BankRg
   module Console
     module StartMenu
-      include AccountInputsReader
+      include AccountInputs
 
       def acquire_current_account
         puts I18n.t(:START_MENU_PHRASES, **start_menu_commands)
@@ -29,16 +29,14 @@ module BankRg
 
       def load
         loop do
-          accounts = AccountsManager.accounts
-
-          return create_the_first_account if accounts.empty?
+          return create_the_first_account unless AccountsManager.accounts?
 
           login = login_input
           password = password_input
 
-          found = accounts.find { |account| account.login == login && account.password == password }
+          account = AccountsManager.find_account(login, password)
 
-          return found unless found.nil?
+          return account unless account.nil?
 
           puts I18n.t(:user_not_exists, scope: :ERROR_PHRASES)
         end

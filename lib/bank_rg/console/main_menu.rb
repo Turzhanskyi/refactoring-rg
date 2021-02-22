@@ -3,7 +3,6 @@ module BankRg
     module MainMenu
       include CardMenu
       include AccountMenu
-      include MoneyMenu
 
       def main_menu
         loop do

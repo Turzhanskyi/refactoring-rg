@@ -1,6 +1,6 @@
 module BankRg
   module Console
-    module AccountInputsReader
+    module AccountInputs
       def account_inputs(errors)
         {
           name: name_input(errors),
