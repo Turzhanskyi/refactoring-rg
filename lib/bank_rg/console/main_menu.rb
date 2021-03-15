@@ -18,12 +18,14 @@ module BankRg
 
       private
 
+      attr_reader :current_account
+
       def main_menu_title
-        I18n.t(:MAIN_MENU_PHRASES, **main_menu_commands.merge(name: @current_account.name))
+        I18n.t(:MAIN_MENU_PHRASES, **main_menu_commands.merge(name: current_account.name))
       end
 
       def main_menu_commands
-        @main_menu_commands ||= I18n.t(:MAIN_MENU_COMMANDS)
+        I18n.t(:MAIN_MENU_COMMANDS)
       end
     end
   end

@@ -3,6 +3,7 @@ require 'yaml'
 
 require_relative '../config/initializers/locale'
 
+require 'bank_rg/account_validator'
 require 'bank_rg/accounts_manager'
 require 'bank_rg/card'
 require 'bank_rg/card/base_card'

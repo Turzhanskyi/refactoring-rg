@@ -2,9 +2,9 @@ module BankRg
   module Console
     module CardMenu
       def show_cards
-        return puts I18n.t('ERROR_PHRASES.no_active_cards') if @current_account.card.empty?
+        return puts I18n.t('ERROR_PHRASES.no_active_cards') if current_account.card.empty?
 
-        @current_account.card.each { |card| puts "- #{card.number}, #{card.type}" }
+        current_account.card.each { |card| puts "- #{card.number}, #{card.type}" }
       end
 
       def create_card
@@ -14,8 +14,8 @@ module BankRg
 
         return if type == :exit
 
-        @current_account.create_card type
-        AccountsManager.update_accounts @current_account
+        current_account.create_card type
+        AccountsManager.update_accounts current_account
       end
 
       def destroy_card
@@ -24,8 +24,8 @@ module BankRg
 
           break unless gets.chomp == I18n.t('Y_N_ANSWERS.y')
 
-          @current_account.destroy_card number
-          AccountsManager.update_accounts @current_account
+          current_account.destroy_card number
+          AccountsManager.update_accounts current_account
         end
       end
 
@@ -63,6 +63,8 @@ module BankRg
 
       private
 
+      attr_reader :current_account
+
       def gets_amount(phrase)
         puts phrase
 
@@ -83,7 +85,7 @@ module BankRg
       end
 
       def process_card(title_phrase)
-        return puts I18n.t('ERROR_PHRASES.no_active_cards') if @current_account.card.empty?
+        return puts I18n.t('ERROR_PHRASES.no_active_cards') if current_account.card.empty?
 
         number = gets_answer(print_cards(title_phrase), 'ERROR_PHRASES.wrong_number')
 
@@ -97,7 +99,7 @@ module BankRg
 
         cards_numbers = {}
 
-        @current_account.card.each.with_index(1) do |card, index|
+        current_account.card.each.with_index(1) do |card, index|
           puts "- #{card.number}, #{card.type}, press #{index}"
           cards_numbers[card.number] = index.to_s
         end
@@ -108,7 +110,7 @@ module BankRg
       end
 
       def create_card_commands
-        @create_card_commands ||= I18n.t(:CREATE_CARD_COMMANDS)
+        I18n.t(:CREATE_CARD_COMMANDS)
       end
     end
   end
