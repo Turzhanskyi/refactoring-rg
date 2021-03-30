@@ -11,25 +11,25 @@ module BankRg
       end
 
       def name_input(errors = [])
-        puts I18n.t(:name, scope: :ASK_PHRASES)
+        puts I18n.t(:name, scope: :ask_phrases)
 
         Account.validate_name gets.chomp, errors
       end
 
       def age_input(errors = [])
-        puts I18n.t(:age, scope: :ASK_PHRASES)
+        puts I18n.t(:age, scope: :ask_phrases)
 
         Account.validate_age gets.chomp.to_i, errors
       end
 
       def login_input(errors = [])
-        puts I18n.t(:login, scope: :ASK_PHRASES)
+        puts I18n.t(:login, scope: :ask_phrases)
 
         Account.validate_login gets.chomp, errors
       end
 
       def password_input(errors = [])
-        puts I18n.t(:password, scope: :ASK_PHRASES)
+        puts I18n.t(:password, scope: :ask_phrases)
 
         Account.validate_password gets.chomp, errors
       end

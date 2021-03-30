@@ -9,12 +9,12 @@ RSpec.describe BankRg::Console do
       end
 
       it 'create account if input is create' do
-        allow(current_subject).to receive_message_chain(:gets, :chomp) { I18n.t(:create, scope: :START_MENU_COMMANDS) }
+        allow(current_subject).to receive_message_chain(:gets, :chomp) { I18n.t(:create, scope: :start_menu_commands) }
         expect(current_subject).to receive(:create)
       end
 
       it 'load account if input is load' do
-        allow(current_subject).to receive_message_chain(:gets, :chomp) { I18n.t(:load, scope: :START_MENU_COMMANDS) }
+        allow(current_subject).to receive_message_chain(:gets, :chomp) { I18n.t(:load, scope: :start_menu_commands) }
         expect(current_subject).to receive(:load)
       end
 
@@ -29,7 +29,7 @@ RSpec.describe BankRg::Console do
         allow(current_subject).to receive_message_chain(:gets, :chomp) { 'test' }
         allow(current_subject).to receive(:exit)
         allow(current_subject).to receive(:main_menu)
-        expect(current_subject).to receive(:puts).with(I18n.t(:START_MENU_PHRASES, **I18n.t(:START_MENU_COMMANDS)))
+        expect(current_subject).to receive(:puts).with(I18n.t(:start_menu_phrases, **I18n.t(:start_menu_commands)))
         current_subject.call
       end
     end
@@ -56,8 +56,8 @@ RSpec.describe BankRg::Console do
 
       it 'with correct out' do
         allow(File).to receive(:open)
-        I18n.t(:ASK_PHRASES).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
-        I18n.t(:ACCOUNT_VALIDATION_PHRASES).each_value.map(&:values).each do |phrase|
+        I18n.t(:ask_phrases).each_value { |phrase| expect(current_subject).to receive(:puts).with(phrase) }
+        I18n.t(:account_validation_phrases).each_value.map(&:values).each do |phrase|
           expect(current_subject).not_to receive(:puts).with(phrase)
         end
         current_subject.create
@@ -85,7 +85,7 @@ RSpec.describe BankRg::Console do
       context 'with name errors' do
         context 'without small letter' do
           let(:error_input) { 'some_test_name' }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.name.first_letter') }
+          let(:error) { I18n.t('account_validation_phrases.name.first_letter') }
           let(:current_inputs) { [error_input, success_age_input, success_login_input, success_password_input] }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
@@ -97,28 +97,28 @@ RSpec.describe BankRg::Console do
 
         context 'when present' do
           let(:error_input) { '' }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.present') }
+          let(:error) { I18n.t('account_validation_phrases.login.present') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
 
         context 'when longer' do
           let(:error_input) { 'E' * 3 }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.longer') }
+          let(:error) { I18n.t('account_validation_phrases.login.longer') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
 
         context 'when shorter' do
           let(:error_input) { 'E' * 21 }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.shorter') }
+          let(:error) { I18n.t('account_validation_phrases.login.shorter') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
 
         context 'when exists' do
           let(:error_input) { 'Denis1345' }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.login.exists') }
+          let(:error) { I18n.t('account_validation_phrases.login.exists') }
 
           before do
             allow(BankRg::AccountsManager)
@@ -131,7 +131,7 @@ RSpec.describe BankRg::Console do
 
       context 'with age errors' do
         let(:current_inputs) { [success_name_input, error_input, success_login_input, success_password_input] }
-        let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.age.length') }
+        let(:error) { I18n.t('account_validation_phrases.age.length') }
 
         context 'with length minimum' do
           let(:error_input) { '22' }
@@ -151,21 +151,21 @@ RSpec.describe BankRg::Console do
 
         context 'when absent' do
           let(:error_input) { '' }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.present') }
+          let(:error) { I18n.t('account_validation_phrases.password.present') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
 
         context 'when longer' do
           let(:error_input) { 'E' * 5 }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.longer') }
+          let(:error) { I18n.t('account_validation_phrases.password.longer') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
 
         context 'when shorter' do
           let(:error_input) { 'E' * 31 }
-          let(:error) { I18n.t('ACCOUNT_VALIDATION_PHRASES.password.shorter') }
+          let(:error) { I18n.t('account_validation_phrases.password.shorter') }
 
           it { expect { current_subject.create }.to output(/#{error}/).to_stdout }
         end
@@ -196,7 +196,7 @@ RSpec.describe BankRg::Console do
         let(:all_inputs) { [login, password] }
 
         it do
-          [I18n.t('ASK_PHRASES.login'), I18n.t('ASK_PHRASES.password')].each do |phrase|
+          [I18n.t('ask_phrases.login'), I18n.t('ask_phrases.password')].each do |phrase|
             expect(current_subject).to receive(:puts).with(phrase)
           end
           current_subject.load
@@ -207,7 +207,7 @@ RSpec.describe BankRg::Console do
         let(:all_inputs) { [login, password] }
 
         it do
-          expect { current_subject.load }.not_to output(/#{I18n.t('ERROR_PHRASES.user_not_exists')}/).to_stdout
+          expect { current_subject.load }.not_to output(/#{I18n.t('error_phrases.user_not_exists')}/).to_stdout
         end
       end
 
@@ -215,7 +215,7 @@ RSpec.describe BankRg::Console do
         let(:all_inputs) { ['test', 'test', login, password] }
 
         it do
-          expect { current_subject.load }.to output(/#{I18n.t('ERROR_PHRASES.user_not_exists')}/).to_stdout
+          expect { current_subject.load }.to output(/#{I18n.t('error_phrases.user_not_exists')}/).to_stdout
         end
       end
     end
@@ -223,13 +223,13 @@ RSpec.describe BankRg::Console do
 
   describe '#create_the_first_account' do
     let(:cancel_input) { 'sdfsdfs' }
-    let(:success_input) { I18n.t('Y_N_ANSWERS.y') }
+    let(:success_input) { I18n.t('y_n_answers.y') }
 
     it 'with correct out' do
       expect(current_subject).to receive_message_chain(:gets, :chomp) {}
       expect(current_subject).to receive(:acquire_current_account)
       expect { current_subject.create_the_first_account }
-        .to output(I18n.t('COMMON_PHRASES.create_first_account', **I18n.t(:Y_N_ANSWERS))).to_stdout
+        .to output(I18n.t('common_phrases.create_first_account', **I18n.t(:y_n_answers))).to_stdout
     end
 
     it 'calls create if user inputs is y' do
@@ -247,7 +247,7 @@ RSpec.describe BankRg::Console do
 
   describe '#main_menu' do
     let(:name) { 'John' }
-    let(:commands) { I18n.t(:MAIN_MENU_COMMANDS) }
+    let(:commands) { I18n.t(:main_menu_commands) }
 
     context 'with correct out' do
       it do
@@ -256,7 +256,7 @@ RSpec.describe BankRg::Console do
         allow(current_subject).to receive_message_chain(:gets, :chomp).and_return('SC', 'exit')
         current_subject.instance_variable_set(:@current_account, instance_double('Account', name: name))
         expect { current_subject.main_menu }.to output(
-          /#{I18n.t(:MAIN_MENU_PHRASES, **I18n.t(:MAIN_MENU_COMMANDS).merge(name: name))}/
+          /#{I18n.t(:main_menu_phrases, **I18n.t(:main_menu_commands).merge(name: name))}/
         ).to_stdout
       end
     end
@@ -279,14 +279,14 @@ RSpec.describe BankRg::Console do
         current_subject.instance_variable_set(:@current_account, instance_double('Account', name: name))
         expect(current_subject).to receive(:exit)
         allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(undefined_command, 'exit')
-        expect { current_subject.main_menu }.to output(/#{I18n.t('ERROR_PHRASES.wrong_command')}/).to_stdout
+        expect { current_subject.main_menu }.to output(/#{I18n.t('error_phrases.wrong_command')}/).to_stdout
       end
     end
   end
 
   describe '#destroy_account' do
     let(:cancel_input) { 'sdfsdfs' }
-    let(:success_input) { I18n.t('Y_N_ANSWERS.y') }
+    let(:success_input) { I18n.t('y_n_answers.y') }
     let(:correct_login) { 'test' }
     let(:fake_login) { 'test1' }
     let(:fake_login2) { 'test2' }
@@ -306,7 +306,7 @@ RSpec.describe BankRg::Console do
     it 'with correct out' do
       expect(current_subject).to receive_message_chain(:gets, :chomp) {}
       expect { current_subject.destroy_account }
-        .to output(I18n.t('COMMON_PHRASES.destroy_account', **I18n.t(:Y_N_ANSWERS))).to_stdout
+        .to output(I18n.t('common_phrases.destroy_account', **I18n.t(:y_n_answers))).to_stdout
     end
 
     context 'when deleting' do
@@ -351,7 +351,7 @@ RSpec.describe BankRg::Console do
 
     it 'outputs error if there are no active cards' do
       current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-      expect(current_subject).to receive(:puts).with(I18n.t('ERROR_PHRASES.no_active_cards'))
+      expect(current_subject).to receive(:puts).with(I18n.t('error_phrases.no_active_cards'))
       current_subject.show_cards
     end
   end
@@ -360,7 +360,7 @@ RSpec.describe BankRg::Console do
     context 'with correct out' do
       it do
         expect(current_subject).to receive(:puts)
-          .with(I18n.t(:CREATE_CARD_PHRASES, **I18n.t(:CREATE_CARD_COMMANDS).merge(exit: I18n.t(:exit))))
+          .with(I18n.t(:create_card_phrases, **I18n.t(:create_card_commands).merge(exit: I18n.t(:exit))))
         current_account = instance_double(BankRg::Account)
         allow(current_account).to receive(:create_card)
         allow(BankRg::AccountsManager).to receive(:update_accounts).with(current_account)
@@ -387,15 +387,15 @@ RSpec.describe BankRg::Console do
 
       {
         usual: {
-          type: I18n.t('CREATE_CARD_COMMANDS.usual'),
+          type: I18n.t('create_card_commands.usual'),
           balance: 50.00
         },
         capitalist: {
-          type: I18n.t('CREATE_CARD_COMMANDS.capitalist'),
+          type: I18n.t('create_card_commands.capitalist'),
           balance: 100.00
         },
         virtual: {
-          type: I18n.t('CREATE_CARD_COMMANDS.virtual'),
+          type: I18n.t('create_card_commands.virtual'),
           balance: 150.00
         }
       }.each do |card_type, card_info|
@@ -421,7 +421,7 @@ RSpec.describe BankRg::Console do
         current_subject.instance_variable_set(:@current_account, current_account)
         allow(current_subject).to receive_message_chain(:gets, :chomp).and_return('test', 'usual')
 
-        expect { current_subject.create_card }.to output(/#{I18n.t('ERROR_PHRASES.wrong_card_type')}/).to_stdout
+        expect { current_subject.create_card }.to output(/#{I18n.t('error_phrases.wrong_card_type')}/).to_stdout
       end
     end
   end
@@ -430,7 +430,7 @@ RSpec.describe BankRg::Console do
     context 'without cards' do
       it 'shows message about not active cards' do
         current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-        expect { current_subject.destroy_card }.to output(/#{I18n.t('ERROR_PHRASES.no_active_cards')}/).to_stdout
+        expect { current_subject.destroy_card }.to output(/#{I18n.t('error_phrases.no_active_cards')}/).to_stdout
       end
     end
 
@@ -449,7 +449,7 @@ RSpec.describe BankRg::Console do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp) { 'exit' }
           expect { current_subject.destroy_card }
-            .to output(/#{I18n.t('COMMON_PHRASES.if_you_want_to_delete')}/).to_stdout
+            .to output(/#{I18n.t('common_phrases.if_you_want_to_delete')}/).to_stdout
           fake_cards.each_with_index do |card, i|
             message = /- #{card.number}, #{card.type}, press #{i + 1}/
             expect { current_subject.destroy_card }.to output(message).to_stdout
@@ -468,17 +468,17 @@ RSpec.describe BankRg::Console do
       context 'with incorrect input of card number' do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(fake_cards.length + 1, 'exit')
-          expect { current_subject.destroy_card }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.destroy_card }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
 
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(-1, 'exit')
-          expect { current_subject.destroy_card }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.destroy_card }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
       end
 
       context 'with correct input of card number' do
-        let(:accept_for_deleting) { I18n.t('Y_N_ANSWERS.y') }
+        let(:accept_for_deleting) { I18n.t('y_n_answers.y') }
         let(:reject_for_deleting) { 'asdf' }
         let(:deletable_card_number) { '1' }
 
@@ -518,7 +518,7 @@ RSpec.describe BankRg::Console do
     context 'without cards' do
       it 'shows message about not active cards' do
         current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-        expect { current_subject.put_money }.to output(/#{I18n.t('ERROR_PHRASES.no_active_cards')}/).to_stdout
+        expect { current_subject.put_money }.to output(/#{I18n.t('error_phrases.no_active_cards')}/).to_stdout
       end
     end
 
@@ -536,7 +536,7 @@ RSpec.describe BankRg::Console do
       context 'with correct out' do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp) { 'exit' }
-          expect { current_subject.put_money }.to output(/#{I18n.t('COMMON_PHRASES.choose_card_putting')}/).to_stdout
+          expect { current_subject.put_money }.to output(/#{I18n.t('common_phrases.choose_card_putting')}/).to_stdout
           fake_cards.each_with_index do |card, i|
             message = /- #{card.number}, #{card.type}, press #{i + 1}/
             expect { current_subject.put_money }.to output(message).to_stdout
@@ -555,12 +555,12 @@ RSpec.describe BankRg::Console do
       context 'with incorrect input of card number' do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(fake_cards.length + 1, 'exit')
-          expect { current_subject.put_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.put_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
 
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(-1, 'exit')
-          expect { current_subject.put_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.put_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
       end
 
@@ -593,7 +593,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, incorrect_money_amount] }
 
           it do
-            expect { current_subject.put_money }.to output(/#{I18n.t('COMMON_PHRASES.put_amount')}/).to_stdout
+            expect { current_subject.put_money }.to output(/#{I18n.t('common_phrases.put_amount')}/).to_stdout
           end
         end
 
@@ -601,7 +601,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, incorrect_money_amount] }
 
           it do
-            expect { current_subject.put_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_amount')}/).to_stdout
+            expect { current_subject.put_money }.to output(/#{I18n.t('error_phrases.wrong_amount')}/).to_stdout
           end
         end
 
@@ -609,7 +609,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, correct_money_amount_lower_than_tax] }
 
           it do
-            expect { current_subject.put_money }.to output(/#{I18n.t('ERROR_PHRASES.tax_higher')}/).to_stdout
+            expect { current_subject.put_money }.to output(/#{I18n.t('error_phrases.tax_higher')}/).to_stdout
           end
         end
 
@@ -651,7 +651,7 @@ RSpec.describe BankRg::Console do
               new_balance = default_balance + correct_money_amount_greater_than_tax - custom_card[:tax]
 
               expect { current_subject.put_money }
-                .to output(/#{I18n.t('COMMON_PHRASES.money_was_put', **{
+                .to output(/#{I18n.t('common_phrases.money_was_put', **{
                                        amount: correct_money_amount_greater_than_tax,
                                        number: custom_card[:card].number,
                                        balance: new_balance,
@@ -673,7 +673,7 @@ RSpec.describe BankRg::Console do
     context 'without cards' do
       it 'shows message about not active cards' do
         current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-        expect { current_subject.withdraw_money }.to output(/#{I18n.t('ERROR_PHRASES.no_active_cards')}/).to_stdout
+        expect { current_subject.withdraw_money }.to output(/#{I18n.t('error_phrases.no_active_cards')}/).to_stdout
       end
     end
 
@@ -692,7 +692,7 @@ RSpec.describe BankRg::Console do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp) { 'exit' }
           expect { current_subject.withdraw_money }
-            .to output(/#{I18n.t('COMMON_PHRASES.choose_card_withdrawing')}/).to_stdout
+            .to output(/#{I18n.t('common_phrases.choose_card_withdrawing')}/).to_stdout
           fake_cards.each_with_index do |card, i|
             message = /- #{card.number}, #{card.type}, press #{i + 1}/
             expect { current_subject.withdraw_money }.to output(message).to_stdout
@@ -711,12 +711,12 @@ RSpec.describe BankRg::Console do
       context 'with incorrect input of card number' do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(fake_cards.length + 1, 'exit')
-          expect { current_subject.withdraw_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.withdraw_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
 
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(-1, 'exit')
-          expect { current_subject.withdraw_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.withdraw_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
       end
 
@@ -749,7 +749,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, incorrect_money_amount] }
 
           it do
-            expect { current_subject.withdraw_money }.to output(/#{I18n.t('COMMON_PHRASES.withdraw_amount')}/).to_stdout
+            expect { current_subject.withdraw_money }.to output(/#{I18n.t('common_phrases.withdraw_amount')}/).to_stdout
           end
         end
 
@@ -757,7 +757,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, incorrect_money_amount] }
 
           it do
-            expect { current_subject.withdraw_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_amount')}/).to_stdout
+            expect { current_subject.withdraw_money }.to output(/#{I18n.t('error_phrases.wrong_amount')}/).to_stdout
           end
         end
 
@@ -766,7 +766,7 @@ RSpec.describe BankRg::Console do
 
           it do
             expect { current_subject.withdraw_money }
-              .to output(/#{I18n.t('ERROR_PHRASES.not_enough_money_to_withdraw')}/).to_stdout
+              .to output(/#{I18n.t('error_phrases.not_enough_money_to_withdraw')}/).to_stdout
           end
         end
 
@@ -808,7 +808,7 @@ RSpec.describe BankRg::Console do
               new_balance = default_balance - correct_money_amount_greater_than_tax - custom_card[:tax]
 
               expect { current_subject.withdraw_money }
-                .to output(/#{I18n.t('COMMON_PHRASES.money_was_withdraw', **{
+                .to output(/#{I18n.t('common_phrases.money_was_withdraw', **{
                                        amount: correct_money_amount_greater_than_tax,
                                        number: custom_card[:card].number,
                                        balance: new_balance,
@@ -830,7 +830,7 @@ RSpec.describe BankRg::Console do
     context 'without cards' do
       it 'shows message about not active cards' do
         current_subject.instance_variable_set(:@current_account, instance_double('Account', card: []))
-        expect { current_subject.send_money }.to output(/#{I18n.t('ERROR_PHRASES.no_active_cards')}/).to_stdout
+        expect { current_subject.send_money }.to output(/#{I18n.t('error_phrases.no_active_cards')}/).to_stdout
       end
     end
 
@@ -849,7 +849,7 @@ RSpec.describe BankRg::Console do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp) { 'exit' }
           expect { current_subject.send_money }
-            .to output(/#{I18n.t('COMMON_PHRASES.choose_card_sending')}/).to_stdout
+            .to output(/#{I18n.t('common_phrases.choose_card_sending')}/).to_stdout
           fake_cards.each_with_index do |card, i|
             message = /- #{card.number}, #{card.type}, press #{i + 1}/
             expect { current_subject.send_money }.to output(message).to_stdout
@@ -868,12 +868,12 @@ RSpec.describe BankRg::Console do
       context 'with incorrect input of card number' do
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(fake_cards.length + 1, 'exit')
-          expect { current_subject.send_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.send_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
 
         it do
           allow(current_subject).to receive_message_chain(:gets, :chomp).and_return(-1, 'exit')
-          expect { current_subject.send_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_number')}/).to_stdout
+          expect { current_subject.send_money }.to output(/#{I18n.t('error_phrases.wrong_number')}/).to_stdout
         end
       end
 
@@ -908,7 +908,7 @@ RSpec.describe BankRg::Console do
 
           it do
             expect { current_subject.send_money }
-              .to output(/#{I18n.t('COMMON_PHRASES.enter_recipient_card')}/).to_stdout
+              .to output(/#{I18n.t('common_phrases.enter_recipient_card')}/).to_stdout
           end
         end
 
@@ -917,7 +917,7 @@ RSpec.describe BankRg::Console do
 
           it do
             expect { current_subject.send_money }
-              .to output(/#{I18n.t('ERROR_PHRASES.wrong_card_number_length')}/).to_stdout
+              .to output(/#{I18n.t('error_phrases.wrong_card_number_length')}/).to_stdout
           end
         end
 
@@ -925,7 +925,7 @@ RSpec.describe BankRg::Console do
           let(:commands) { [chosen_card_number, card_two.number, incorrect_money_amount] }
 
           it do
-            expect { current_subject.send_money }.to output(/#{I18n.t('ERROR_PHRASES.wrong_amount')}/).to_stdout
+            expect { current_subject.send_money }.to output(/#{I18n.t('error_phrases.wrong_amount')}/).to_stdout
           end
         end
 
@@ -934,7 +934,7 @@ RSpec.describe BankRg::Console do
 
           it do
             expect { current_subject.send_money }
-              .to output(/#{I18n.t('ERROR_PHRASES.not_enough_money_to_send')}/).to_stdout
+              .to output(/#{I18n.t('error_phrases.not_enough_money_to_send')}/).to_stdout
           end
         end
 
@@ -943,7 +943,7 @@ RSpec.describe BankRg::Console do
 
           it do
             expect { current_subject.send_money }
-              .to output(/#{I18n.t('ERROR_PHRASES.tax_higher')}/).to_stdout
+              .to output(/#{I18n.t('error_phrases.tax_higher')}/).to_stdout
           end
         end
 
@@ -985,7 +985,7 @@ RSpec.describe BankRg::Console do
               new_balance = default_balance - correct_money_amount_greater_than_tax - custom_card[:tax]
 
               expect { current_subject.send_money }
-                .to output(/#{I18n.t('COMMON_PHRASES.money_was_sent', **{
+                .to output(/#{I18n.t('common_phrases.money_was_sent', **{
                                        amount: correct_money_amount_greater_than_tax,
                                        number: custom_card[:card].number,
                                        balance: new_balance,

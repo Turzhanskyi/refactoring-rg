@@ -7,7 +7,7 @@ module BankRg
 
           return unless pass_check?(card, :check_put, amount)
 
-          perform_operation(card, :put_money, amount, 'COMMON_PHRASES.money_was_put')
+          perform_operation(card, :put_money, amount, 'common_phrases.money_was_put')
 
           AccountsManager.update_accounts card.account
         end
@@ -17,7 +17,7 @@ module BankRg
 
           return unless pass_check?(card, :check_withdraw, amount)
 
-          perform_operation(card, :withdraw_money, amount, 'COMMON_PHRASES.money_was_withdraw')
+          perform_operation(card, :withdraw_money, amount, 'common_phrases.money_was_withdraw')
 
           AccountsManager.update_accounts card.account
         end
@@ -30,8 +30,8 @@ module BankRg
 
           return if !pass_check?(sender_card, :check_send, amount) || !pass_check?(recipient_card, :check_put, amount)
 
-          perform_operation(sender_card, :send_money, amount, 'COMMON_PHRASES.money_was_sent')
-          perform_operation(recipient_card, :put_money, amount, 'COMMON_PHRASES.money_was_put')
+          perform_operation(sender_card, :send_money, amount, 'common_phrases.money_was_sent')
+          perform_operation(recipient_card, :put_money, amount, 'common_phrases.money_was_put')
 
           AccountsManager.update_accounts sender_card.account, recipient_card.account
         end
@@ -39,11 +39,11 @@ module BankRg
        private
 
         ERRORS = {
-          wrong_amount: 'ERROR_PHRASES.wrong_amount',
-          tax_higher: 'ERROR_PHRASES.tax_higher',
-          not_enough_money_to_withdraw: 'ERROR_PHRASES.not_enough_money_to_withdraw',
-          no_card_with_number: 'ERROR_PHRASES.no_card_with_number',
-          not_enough_money_to_send: 'ERROR_PHRASES.not_enough_money_to_send'
+          wrong_amount: 'error_phrases.wrong_amount',
+          tax_higher: 'error_phrases.tax_higher',
+          not_enough_money_to_withdraw: 'error_phrases.not_enough_money_to_withdraw',
+          no_card_with_number: 'error_phrases.no_card_with_number',
+          not_enough_money_to_send: 'error_phrases.not_enough_money_to_send'
         }.freeze
 
         def perform_operation(card, operation, amount, result_message)

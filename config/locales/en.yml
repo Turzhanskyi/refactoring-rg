@@ -1,5 +1,5 @@
 en:
-  ACCOUNT_VALIDATION_PHRASES:
+  account_validation_phrases:
     age:
       length: "Your Age must be greeter then 23 and lower then 90"
     login:
@@ -13,12 +13,12 @@ en:
       longer: "Password must be longer then 6 symbols"
       present: "Password must present"
       shorter: "Password must be shorter then 30 symbols"
-  ASK_PHRASES:
+  ask_phrases:
     age: "Enter your age"
     login: "Enter your login"
     name: "Enter your name"
     password: "Enter your password"
-  COMMON_PHRASES:
+  common_phrases:
     choose_card_putting: "Choose the card for putting:"
     choose_card_sending: "Choose the card for sending:"
     choose_card_withdrawing: "Choose the card for withdrawing:"
@@ -33,17 +33,17 @@ en:
     put_amount: "Input the amount of money you want to put on your card"
     send_amount: "Input the amount of money you want to send"
     withdraw_amount: "Input the amount of money you want to withdraw"
-  CREATE_CARD_COMMANDS:
+  create_card_commands:
     capitalist: "capitalist"
     usual: "usual"
     virtual: "virtual"
-  CREATE_CARD_PHRASES: |
+  create_card_phrases: |
     You could create one of 3 card types
     - Usual card. 2% tax on card INCOME. 20$ tax on SENDING money from this card. 5% tax on WITHDRAWING money. For creation this card - press `%{usual}`
     - Capitalist card. 10$ tax on card INCOME. 10% tax on SENDING money from this card. 4$ tax on WITHDRAWING money. For creation this card - press `%{capitalist}`
     - Virtual card. 1$ tax on card INCOME. 1$ tax on SENDING money from this card. 12% tax on WITHDRAWING money. For creation this card - press `%{virtual}`
     - For exit - press `%{exit}`
-  ERROR_PHRASES:
+  error_phrases:
     no_active_cards: "There is no active cards!\n"
     no_card_with_number: "There is no card with number %{recipient_number}\n"
     not_enough_money_to_send: "There is no enough money on sender card"
@@ -55,7 +55,7 @@ en:
     wrong_card_type: "Wrong card type. Try again!\n"
     wrong_command: "Wrong command. Try again!"
     wrong_number: "You entered wrong number!\n"
-  MAIN_MENU_COMMANDS:
+  main_menu_commands:
     show_cards: "SC"
     create_card: "CC"
     destroy_card: "DC"
@@ -64,18 +64,18 @@ en:
     send_money: "SM"
     destroy_account: "DA"
     exit: "exit"
-  PRESS_EXIT_PHRASE: "press `%{exit}` to exit\n"
+  press_exit_phrase: "press `%{exit}` to exit\n"
   exit: "exit"
-  START_MENU_COMMANDS:
+  start_menu_commands:
     create: "create"
     load: "load"
     exit: "exit"
-  START_MENU_PHRASES: |
+  start_menu_phrases: |
     Hello, we are RubyG bank!
     - If you want to create account - press `%{create}`
     - If you want to load account - press `%{load}`
     - If you want to exit - press `%{exit}`
-  MAIN_MENU_PHRASES: |
+  main_menu_phrases: |
 
     Welcome, %{name}
     If you want to:
@@ -87,6 +87,6 @@ en:
     - send money to another card  - press `%{send_money}`
     - destroy account - press `%{destroy_account}`
     - exit from account - press `%{exit}`
-  Y_N_ANSWERS:
+  y_n_answers:
     y: "y"
     n: "n"

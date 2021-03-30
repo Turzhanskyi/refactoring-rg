@@ -4,7 +4,7 @@ module BankRg
       include AccountInputs
 
       def acquire_current_account
-        puts I18n.t(:START_MENU_PHRASES, **start_menu_commands)
+        puts I18n.t(:start_menu_phrases, **start_menu_commands)
 
         command = gets.chomp
 
@@ -38,20 +38,20 @@ module BankRg
 
           return account unless account.nil?
 
-          puts I18n.t(:user_not_exists, scope: :ERROR_PHRASES)
+          puts I18n.t(:user_not_exists, scope: :error_phrases)
         end
       end
 
       def create_the_first_account
-        puts I18n.t('COMMON_PHRASES.create_first_account', **I18n.t(:Y_N_ANSWERS))
+        puts I18n.t('common_phrases.create_first_account', **I18n.t(:y_n_answers))
 
-        gets.chomp == I18n.t('Y_N_ANSWERS.y') ? create : acquire_current_account
+        gets.chomp == I18n.t('y_n_answers.y') ? create : acquire_current_account
       end
 
       private
 
       def start_menu_commands
-        @start_menu_commands ||= I18n.t(:START_MENU_COMMANDS)
+        @start_menu_commands ||= I18n.t(:start_menu_commands)
       end
     end
   end
