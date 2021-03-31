@@ -2,8 +2,6 @@ module BankRg
   module Card
     class VirtualCard < BaseCard
       START_BALANCE = 150
-      PUT_TAX = 1
-      SEND_TAX = 1
 
       def initialize(account)
         super
@@ -13,7 +11,7 @@ module BankRg
       end
 
       def put_tax(_amount)
-        PUT_TAX
+        1
       end
 
       def withdraw_tax(amount)
@@ -21,7 +19,7 @@ module BankRg
       end
 
       def send_tax(_amount)
-        SEND_TAX
+        1
       end
     end
   end

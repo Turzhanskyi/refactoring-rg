@@ -47,13 +47,13 @@ module BankRg
         }.freeze
 
         def perform_operation(card, operation, amount, result_message)
-          tax = card.send(operation, amount)
+          tax = card.public_send(operation, amount)
 
           puts I18n.t(result_message, **{ amount: amount, number: card.number, balance: card.balance, tax: tax })
         end
 
         def pass_check?(card, check, amount)
-          status = card.send(check, amount)
+          status = card.public_send(check, amount)
 
           return true if status == :ok
 

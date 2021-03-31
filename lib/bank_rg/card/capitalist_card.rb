@@ -2,7 +2,6 @@ module BankRg
   module Card
     class CapitalistCard < BaseCard
       START_BALANCE = 100
-      PUT_TAX = 10
 
       def initialize(account)
         super
@@ -12,7 +11,7 @@ module BankRg
       end
 
       def put_tax(_amount)
-        PUT_TAX
+        10
       end
 
       def withdraw_tax(amount)

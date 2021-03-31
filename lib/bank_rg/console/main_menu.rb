@@ -12,7 +12,7 @@ module BankRg
 
           next puts I18n.t('error_phrases.wrong_command') if command.nil?
           break exit if command == :exit
-          next send command if respond_to?(command, true)
+          next public_send command if respond_to?(command, true)
         end
       end
 
