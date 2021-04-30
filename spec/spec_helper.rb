@@ -1,13 +1,11 @@
 require 'simplecov'
 require 'undercover'
 
-SimpleCov.minimum_coverage 95
 SimpleCov.start do
   add_filter(%r{/spec/})
 end
 
-require 'bundler/setup'
-require 'bank_rg'
+require_relative '../bank_rg/bank_rg'
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
