@@ -1,0 +1,63 @@
+version: 2.1
+
+executors:
+  default:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/ruby:2.7.2
+
+caches:
+  - &bundle_cache_full v1-gem-cache-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+  - &bundle_cache_branch v1-gem-cache-{{ .Branch }}
+  - &bundle_cache_repo v1-gem-cache
+
+commands:
+  setup_environment:
+    steps:
+      - checkout
+      - run: sudo apt install cmake
+      - restore_cache:
+          keys:
+            - *bundle_cache_full
+            - *bundle_cache_branch
+            - *bundle_cache_repo
+      - run: bundle config set path vendor/bundle
+      - run: bundle install
+      - save_cache:
+          key: *bundle_cache_full
+          paths:
+            - vendor/bundle
+  run_linters:
+    steps:
+      - run:
+          name: linters
+          command: bundle exec rubocop && bundle exec fasterer
+  run_specs:
+    steps:
+      - run:
+          name: specs
+          command: bundle exec rspec
+      - store_artifacts:
+          path: ~/repo/coverage
+          destination: coverage
+
+jobs:
+  lintering:
+    executor: default
+    steps:
+      - setup_environment
+      - run_linters
+  testing:
+    executor: default
+    steps:
+      - setup_environment
+      - run_specs
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - lintering
+      - testing:
+          requires:
+            - lintering

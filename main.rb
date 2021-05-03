@@ -1,3 +1,6 @@
-require_relative 'account'
+$LOAD_PATH << File.expand_path('./bank_rg', __dir__)
 
-Account.new.console
+require 'bundler/setup'
+require 'bank_rg'
+
+Console.new.call

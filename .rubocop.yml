@@ -1,5 +1,12 @@
 require: rubocop-rspec
 
+AllCops:
+  TargetRubyVersion: 2.7.2
+  NewCops: enable
+  Exclude:
+    - 'spec/**/*.rb'
+    - 'vendor/**/*'
+
 RSpec/MessageChain:
   Enabled: false
 
@@ -15,16 +22,19 @@ RSpec/ExampleLength:
 RSpec/MessageSpies:
   Enabled: false
 
+Metrics/AbcSize:
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - 'Gemfile'
     - 'spec/**/*.rb'
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
-Documentation:
+Style/Documentation:
   Enabled: false
 
-FrozenStringLiteralComment:
+Style/FrozenStringLiteralComment:
   Enabled: false
